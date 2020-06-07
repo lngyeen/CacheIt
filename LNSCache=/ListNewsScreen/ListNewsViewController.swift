@@ -27,7 +27,7 @@ final class ListMovieViewController: UIViewController {
 
     private let model = ListNewsModel()
     private let cellId = "ListMovieTableViewCell"
-    private var listArticle: [Movie] = [] {
+    private var listMovie: [Movie] = [] {
         didSet {
             self.tableView.reloadData()
         }
@@ -51,25 +51,26 @@ final class ListMovieViewController: UIViewController {
 
     private func addHandler() {
 
-        self.model.onFail = { error in
-            // TODO: Use cache
+        self.model.onFail = { [weak self] error in
+            // Use cache
+            guard let self = self else { return }
             self.centerSpinner.stopAnimating()
-            self.listArticle = movieCache.listCachedMovie
+            self.listMovie = movieCache.listCachedMovie
             print(error)
         }
 
-        self.model.onGetListArticle = { [weak self] listArticle in
+        self.model.onGetlistMovie = { [weak self] listMovie in
             guard let self = self else { return }
 
             self.centerSpinner.stopAnimating()
-            self.listArticle = listArticle
+            self.listMovie = listMovie
         }
 
     }
 
     private func loadData() {
         self.centerSpinner.startAnimating()
-        self.model.getListArticle()
+        self.model.getlistMovie()
     }
 
 }
@@ -81,14 +82,14 @@ extension ListMovieViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.listArticle.count
+        return self.listMovie.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: self.cellId) as! ListMovieTableViewCell
 
-        cell.configCellWith(movie: self.listArticle[indexPath.row])
+        cell.configCellWith(movie: self.listMovie[indexPath.row])
         return cell
 
     }

@@ -11,12 +11,12 @@ import Foundation
 final class ListNewsModel {
 
     var onFail: ((_ error: String) -> Void)?
-    var onGetListArticle: ((_ list: [Movie]) -> Void)?
+    var onGetlistMovie: ((_ list: [Movie]) -> Void)?
     private var listMovie: [Movie] = []
 
     private var page: Int = 1
 
-    func getListArticle() {
+    func getlistMovie() {
 
         let url = URL(string: "https://api.themoviedb.org/3/search/movie?query=the&page=\(self.page)&api_key=\(Const.kAPIKey)")!
         let urlRequest = URLRequest(url: url)
